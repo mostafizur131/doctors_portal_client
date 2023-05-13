@@ -1,7 +1,6 @@
 import React from "react";
-import PrimaryButtons from "../../../Components/PrimaryButtons";
 
-const AppointmentOption = ({ option }) => {
+const AppointmentOption = ({ option, setTreatment }) => {
   const { name, slots } = option;
   return (
     <div className="card shadow-lg border-2 border-gray-100">
@@ -14,7 +13,14 @@ const AppointmentOption = ({ option }) => {
           {slots.length} {slots.length > 1 ? "spaces" : "space"} available
         </p>
         <div className="mt-2">
-          <PrimaryButtons>Book Appointment</PrimaryButtons>
+          <label
+            onClick={() => setTreatment(option)}
+            disabled={slots.length === 0}
+            htmlFor="booking_modal"
+            className="btn btn-primary bg-gradient-to-r from-secondary to-primary text-white uppercase hover:bg-gradient-to-l border-0 "
+          >
+            Book Appointment
+          </label>
         </div>
       </div>
     </div>
