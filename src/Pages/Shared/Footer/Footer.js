@@ -1,13 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import footerImg from "../../../assets/images/footer.png";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const imageUrl = windowWidth >= 650 ? footerImg : "none";
+  useEffect(() => {
+    const handleWindowResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleWindowResize);
+
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, []);
   return (
     <footer
       className="px-10 py-14 bg-white text-accent"
       style={{
-        backgroundImage: `url(${footerImg})`,
+        backgroundImage: `url(${imageUrl})`,
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
         backgroundPosition: "center center",
