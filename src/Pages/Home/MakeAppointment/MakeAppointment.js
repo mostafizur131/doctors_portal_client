@@ -9,6 +9,10 @@ const MakeAppointment = () => {
       className=""
       style={{
         background: `url(${appointment})`,
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        backgroundPosition: "center center",
+        width: "100%",
       }}
     >
       <div className="hero text-white relative my-10 lg:my-20 py-10 lg:py-8 xl:py-16">

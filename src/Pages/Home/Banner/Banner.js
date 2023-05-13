@@ -1,10 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import chair from "../../../assets/images/chair.png";
 import PrimaryButtons from "../../../Components/PrimaryButtons";
+import bannerBg from "../../../assets/images/bg.png";
 
 const Banner = () => {
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const imageUrl = windowWidth >= 650 ? bannerBg : "none";
+
+  useEffect(() => {
+    const handleWindowResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleWindowResize);
+
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, []);
   return (
-    <div className="hero px-3">
+    <header
+      className="hero lg:py-48"
+      style={{
+        background: `url(${imageUrl})`,
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        backgroundPosition: "center center",
+        width: "100%",
+      }}
+    >
       <div className="hero-content flex-col lg:flex-row-reverse">
         <img
           src={chair}
@@ -23,7 +47,7 @@ const Banner = () => {
           <PrimaryButtons>Get Started</PrimaryButtons>
         </div>
       </div>
-    </div>
+    </header>
   );
 };
 
