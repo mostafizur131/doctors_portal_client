@@ -7,10 +7,10 @@ const Terms = () => {
       <div className="hero-content flex-col lg:flex-row">
         <img
           src={treatment}
-          className="md:w-1/3 rounded-lg shadow-2xl"
+          className="lg:w-1/3 rounded-lg shadow-2xl"
           alt="treatment"
         />
-        <div className="md:w-1/2 lg:ps-24">
+        <div className=" mt-16 lg:mt-0 lg:w-1/2 lg:ps-24">
           <h2 className="text-5xl font-bold text-accent">
             Exceptional Dental Care, on Your Terms
           </h2>
