@@ -1,27 +1,39 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthProvider";
+import { toast } from "react-hot-toast";
 
 const SignUp = () => {
+  const [signUpError, setSignUpError] = useState("");
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const { createUser } = useContext(AuthContext);
+  const { createUser, updateUser } = useContext(AuthContext);
 
   const handleSignup = (data) => {
     createUser(data.email, data.password)
       .then((result) => {
         const user = result.user;
         console.log(user);
+        const userInfo = {
+          displayName: data.name,
+        };
+        updateUser(userInfo)
+          .then(() => {})
+          .catch((error) => {
+            console.log(error);
+          });
+        toast("New user has created");
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log(errorCode, errorMessage);
+        setSignUpError(error);
       });
   };
   return (
@@ -88,6 +100,11 @@ const SignUp = () => {
             {errors.password && (
               <span className="text-red-500" role="alert">
                 {errors.password.message}
+              </span>
+            )}
+            {signUpError && (
+              <span className="text-red-500" role="alert">
+                {signUpError}
               </span>
             )}
           </div>

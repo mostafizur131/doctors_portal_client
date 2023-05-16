@@ -1,39 +1,57 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../../contexts/AuthProvider";
+import { toast } from "react-hot-toast";
 
 const Navbar = () => {
-  const { user } = useContext(AuthContext);
+  const { user, logOut } = useContext(AuthContext);
+
+  const handleLogOut = () => {
+    logOut()
+      .then(() => {
+        // Sign-out successful.
+        toast("Sign-out successful.");
+      })
+      .catch((error) => {
+        // An error happened.
+        console.log(error);
+      });
+  };
   const navItems = (
     <>
       <li>
         <Link to="/">Home</Link>
       </li>
       <li>
-        <Link to="about">About</Link>
+        <Link to="/about">About</Link>
       </li>
       <li>
-        <Link to="appointment">Appointment</Link>
+        <Link to="/appointment">Appointment</Link>
       </li>
       <li>
-        <Link to="reviews">Reviews</Link>
+        <Link to="/reviews">Reviews</Link>
       </li>
       <li>
-        <Link to="contact">Contact Us</Link>
+        <Link to="/contact">Contact Us</Link>
       </li>
       {user?.uid ? (
         <>
           <li>
-            <Link to="signup">Sign Up</Link>
+            <Link to="/dashboard">Dashboard</Link>
           </li>
           <li>
-            <Link to="/">Log Out</Link>
+            <button onClick={() => handleLogOut()}>Log Out</button>
           </li>
         </>
       ) : (
-        <li>
-          <Link to="login">Log In</Link>
-        </li>
+        <>
+          <li>
+            <Link to="login">Log In</Link>
+          </li>
+          <li>
+            <Link to="signup">Sign Up</Link>
+          </li>
+        </>
       )}
     </>
   );
