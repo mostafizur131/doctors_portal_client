@@ -1,35 +1,56 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthProvider";
 
-const Login = () => {
-  const [loginErrors, setLoginErrors] = useState("");
+const SignUp = () => {
   const {
     register,
-    formState: { errors },
     handleSubmit,
+    formState: { errors },
   } = useForm();
 
-  const { logIn } = useContext(AuthContext);
-  const handleLogin = (data) => {
-    setLoginErrors("");
-    logIn(data.email, data.password)
+  const { createUser } = useContext(AuthContext);
+
+  const handleSignup = (data) => {
+    createUser(data.email, data.password)
       .then((result) => {
-        const logedUser = result.user;
+        const user = result.user;
+        console.log(user);
       })
-      .catch((errors) => {
-        setLoginErrors(errors.message);
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
       });
   };
   return (
     <div className="flex justify-center items-center min-h-[90vh]">
       <div className="w-full max-w-md p-8 space-y-3 rounded-xl bg-white shadow-lg text-gray-800">
-        <h2 className="text-4xl font-bold text-center">Login</h2>
+        <h2 className="text-4xl font-bold text-center">Sign Up</h2>
         <form
-          onSubmit={handleSubmit(handleLogin)}
+          onSubmit={handleSubmit(handleSignup)}
           className="space-y-6 ng-untouched ng-pristine ng-valid"
         >
+          <div className="space-y-1 text-sm">
+            <label for="name" className="block text-gray-700 font-medium ">
+              Name
+            </label>
+            <input
+              {...register("name", {
+                required: "Please provide your beautiful name",
+              })}
+              type="text"
+              name="name"
+              id="name"
+              className="w-full px-4 py-3 rounded-md border-2 border-gray-800 bg-white text-gray-800"
+            />
+            {errors.name && (
+              <p className="text-red-500" role="alert">
+                {errors.name?.message}
+              </p>
+            )}
+          </div>
           <div className="space-y-1 text-sm">
             <label for="email" className="block text-gray-700 font-medium ">
               Email
@@ -69,19 +90,15 @@ const Login = () => {
                 {errors.password.message}
               </span>
             )}
-            {loginErrors && <span className="text-red-500">{loginErrors}</span>}
-            <div className="flex justify-start text-xs font-medium text-gray-500">
-              <a href="/">Forgot Password?</a>
-            </div>
           </div>
           <button className="block w-full p-3 text-center rounded-md text-white bg-gray-800 font-medium border-2 border-gray-800 hover:bg-white hover:text-gray-800">
-            LOGIN
+            Sign Up
           </button>
         </form>
         <p className="text-xs text-center sm:px-6 text-gray-500">
-          New to Doctors Portal?{" "}
-          <Link to="/signup" className="underline text-emerald-300">
-            Create an account
+          Already have an Account?{" "}
+          <Link to="/login" className="underline text-emerald-300">
+            Log In
           </Link>
         </p>
         <div className="flex items-center pt-4 space-x-1">
@@ -99,4 +116,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUp;
