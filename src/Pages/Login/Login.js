@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthProvider";
+import { toast } from "react-hot-toast";
 
 const Login = () => {
   const [loginErrors, setLoginErrors] = useState("");
@@ -16,7 +17,8 @@ const Login = () => {
 
   const from = location.state?.from?.pathname || "/";
 
-  const { logIn } = useContext(AuthContext);
+  const { logIn, googleLogin } = useContext(AuthContext);
+
   const handleLogin = (data) => {
     setLoginErrors("");
     logIn(data.email, data.password)
@@ -27,6 +29,19 @@ const Login = () => {
         setLoginErrors(errors.message);
       });
   };
+
+  // Handle Google Login
+  const handleGoogleLogin = () => {
+    googleLogin()
+      .then(() => {
+        toast.success("Google Log In Successfully");
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error(err.message);
+      });
+  };
+
   return (
     <div className="flex justify-center items-center min-h-[90vh]">
       <div className="w-full max-w-md p-8 space-y-3 rounded-xl bg-white shadow-lg text-gray-800">
@@ -95,7 +110,10 @@ const Login = () => {
           <div className="flex-1 h-px sm:w-16 bg-gray-700"></div>
         </div>
         <div className="flex justify-center ">
-          <button className="block w-full p-3 text-center rounded-md border-2 border-gray-800 text-gray-800 bg-white font-medium hover:bg-gray-800 hover:text-white">
+          <button
+            onClick={() => handleGoogleLogin()}
+            className="block w-full p-3 text-center rounded-md border-2 border-gray-800 text-gray-800 bg-white font-medium hover:bg-gray-800 hover:text-white"
+          >
             CONTINUE WITH GOOGLE
           </button>
         </div>

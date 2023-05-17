@@ -12,9 +12,10 @@ const SignUp = () => {
     formState: { errors },
   } = useForm();
 
-  const { createUser, updateUser } = useContext(AuthContext);
+  const { createUser, updateUser, googleLogin } = useContext(AuthContext);
 
   const handleSignup = (data) => {
+    console.log(data.name);
     createUser(data.email, data.password)
       .then((result) => {
         const user = result.user;
@@ -34,6 +35,18 @@ const SignUp = () => {
         const errorMessage = error.message;
         console.log(errorCode, errorMessage);
         setSignUpError(error);
+      });
+  };
+
+  // Handle Google Login
+  const handleGoogleLogin = () => {
+    googleLogin()
+      .then(() => {
+        toast.success("Google Sign Up Successfully");
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error(err.message);
       });
   };
   return (
@@ -124,7 +137,10 @@ const SignUp = () => {
           <div className="flex-1 h-px sm:w-16 bg-gray-700"></div>
         </div>
         <div className="flex justify-center ">
-          <button className="block w-full p-3 text-center rounded-md border-2 border-gray-800 text-gray-800 bg-white font-medium hover:bg-gray-800 hover:text-white">
+          <button
+            onClick={() => handleGoogleLogin()}
+            className="block w-full p-3 text-center rounded-md border-2 border-gray-800 text-gray-800 bg-white font-medium hover:bg-gray-800 hover:text-white"
+          >
             CONTINUE WITH GOOGLE
           </button>
         </div>
